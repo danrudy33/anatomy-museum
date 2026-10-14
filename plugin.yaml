@@ -1,0 +1,17 @@
+manifest_version: 1
+name: anatomy-museum
+version: "0.1.0"
+description: On-demand Anatomy community gallery, search, local favorites and sandboxed figure playback for Hermes Desktop.
+author: DanRudy33
+kind: standalone
+license: MIT
+requires_hermes: ">=0.21.6"
+platforms: [macos]
+provides_tools: []
+provides_hooks: []
+requires_env: []
+capabilities:
+  provides_tools: []
+  provides_hooks: []
+  provides_middleware: []
+  requires_env: []
