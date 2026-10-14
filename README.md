@@ -22,12 +22,25 @@ Enable **Desktop: Anatomy Museum** in **Capabilities → Plugins**. Open from th
 The tree is a real Desktop-only plugin package: `plugin.yaml` plus `desktop/plugin.js`. There is no Python backend, dependency install, server or plugin build step. Install the repository at its **reviewed full 40-character commit** using the standard installer:
 
 ```sh
-hermes plugins install https://github.com/danrudy33/anatomy-museum --ref REVIEWED_40_CHARACTER_COMMIT --no-enable
+hermes plugins install https://github.com/danrudy33/anatomy-museum --ref 6c2f3912b6af87d1149e38be523157057533d585 --no-enable
 ```
 
-The URL is the intended public destination; a candidate is not evidence it has been published. Replace the explicit placeholder with the actual reviewed commit. After catalog acceptance, `hermes plugins install anatomy-museum --no-enable` uses the maintainer-reviewed pin. Until then, do not assume the bare catalog name exists.
+This command installs the published 0.1.0 release at its exact independently reviewed commit. After catalog acceptance, `hermes plugins install anatomy-museum --no-enable` uses the maintainer-reviewed catalog pin. Until then, use the repository URL rather than the bare catalog name.
 
-Restart/rescan Desktop if needed so its normal package discovery materializes the Desktop half. Enable its **Desktop** switch in Capabilities → Plugins. No agent-side enable is needed for this UI-only package. A Python capability probe may report that it was skipped because no `__init__.py` exists. Current `plugins doctor` assumes a Python entrypoint and can fail for this valid Desktop-only shape; `plugins validate` is the catalog admission gate. `plugins compat` is not available in the tested CLI. Do not add a dummy backend to conceal these tool limitations.
+After the command finishes:
+
+1. Open **Capabilities → Plugins** in Hermes Desktop.
+2. Click **Rescan**: the small **circular-arrow icon at the top-right of the installed-plugins section**, beside the folder icon and **Install from Git**. It is an icon-only button, not a button with the word Rescan printed on it; hover to see its **Rescan** tooltip. This lets an already-running Desktop discover and copy the package's Desktop half.
+3. Find **Anatomy Museum** and enable its **Desktop** switch.
+4. Open it from the sidebar or **⌘K → Open Anatomy Museum**.
+
+### Stuck on “copying…”?
+
+That label means the package is installed but its Desktop half has not yet been discovered/copied into the app. It is **not a live copy-progress indicator**, so waiting longer may not help. Click the **Rescan circular-arrow icon** once; when discovery finishes, the Desktop switch should replace the pending label. Then enable that switch. This resolved the actual recipient-install case without reinstalling, manually copying files or restarting Hermes.
+
+No agent-side `hermes plugins enable anatomy-museum` command is needed for this UI-only package, and it is not a substitute for Desktop discovery and the Desktop switch. If Rescan does not resolve the pending label, report the error and your Desktop/backend connection setup rather than repeatedly reinstalling. A remote backend's package is not automatically a local frontend installation; use the supported **Install from Git** UI with the **Desktop** target for that case.
+
+A Python capability probe may report that it was skipped because no `__init__.py` exists. Current `plugins doctor` assumes a Python entrypoint and can fail for this valid Desktop-only shape; `plugins validate` is the catalog admission gate. `plugins compat` is not available in the tested CLI. Do not add a dummy backend to conceal these tool limitations.
 
 Disable the Desktop switch to remove contributions and cancel metadata/guest work. Remove the package with `hermes plugins remove anatomy-museum`; Desktop rescan/restart reconciles its managed copy. Removing code does not promise erasure of Desktop-local preferences. Rollback by disabling, removing, installing the prior reviewed exact commit with `--no-enable`, and enabling the Desktop switch. Do not overwrite unrelated plugins or delete chat/project records.
 
